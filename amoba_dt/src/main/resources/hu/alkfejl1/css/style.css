@@ -1,0 +1,56 @@
+.button {
+    -fx-background-color: lightgray;
+    -fx-max-height: 40;
+    -fx-maxWidth: 40;
+    -fx-min-height: 40;
+    -fx-min-width: 40;
+    -fx-font-size: 18;
+}
+#VBoxmain{
+    -fx-min-height: 500;
+    -fx-min-width: 600;
+}
+
+#Sum1 {
+    -fx-alignment: CENTER;
+    -fx-content-display: CENTER;
+    -fx-pref-height: 30;
+    -fx-pref-width: 590;
+    -fx-font-size: 23;
+    -fx-padding: 10 0 10 0;
+}
+
+#CenterBox {
+    -fx-pref-height: 500;
+    -fx-pref-width: 600;
+}
+
+#player1Time {
+    -fx-alignment: CENTER;
+    -fx-content-display: TOP;
+    -fx-graphic-text-gap: 0;
+    -fx-min-height: 400;
+    -fx-min-width: 40;
+    -fx-text-alignment: CENTER;
+    -fx-text-overrun: "CLIP";
+    -fx-wrap-text: true;
+    -fx-font-size: 23;
+}
+
+#player2Time {
+    -fx-alignment: CENTER;
+    -fx-content-display: TOP;
+    -fx-graphic-text-gap: 0;
+    -fx-min-height: 400;
+    -fx-min-width: 40;
+    -fx-text-alignment: CENTER;
+    -fx-text-overrun: "CLIP";
+    -fx-wrap-text: true;
+    -fx-font-size: 23;
+}
+
+#Grid01 {
+    -fx-grid-lines-visible: true;
+    -fx-min-height: 400;
+    -fx-min-width: 400;
+}
