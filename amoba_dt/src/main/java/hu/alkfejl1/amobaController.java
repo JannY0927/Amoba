@@ -2,6 +2,7 @@ package hu.alkfejl1;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -38,6 +39,8 @@ public class amobaController implements Initializable {
     public MenuItem m01;
     @FXML
     public MenuItem m02;
+    @FXML
+    public MenuItem exit;
     @FXML
     public RadioMenuItem m11;
     @FXML
@@ -224,5 +227,8 @@ public class amobaController implements Initializable {
         return positive;
     }
 
+    public void onExit() {
+        Platform.exit();
+    }
 
 };

@@ -25,7 +25,7 @@ public class App extends Application {
     public void start(Stage stage) {
         PlayedGameDb gpd = new PlayedGameDbImp();
       //  System.out.println(gpd);
-        gpd.findall().forEach(System.out::println);
+        System.out.println("Jani" + gpd.select(0));
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("amoba.fxml"));
         try {

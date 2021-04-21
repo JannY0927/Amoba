@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="VBoxmain" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.alkfejl1.amobaController">
+<VBox fx:id="VBoxmain" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.alkfejl1.amobaController">
     <children>
         <MenuBar>
             <menus>
@@ -24,7 +24,7 @@
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Load game" />
-                <Menu mnemonicParsing="false" text="Exit" />
+                <Menu fx:id="exit" mnemonicParsing="false" onAction="#onExit" text="Exit" />
             </menus>
         </MenuBar>
         <Label fx:id="Sum1" onInputMethodTextChanged="#setGameTime" text="GameTime" />
