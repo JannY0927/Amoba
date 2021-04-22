@@ -14,6 +14,7 @@ public class PlayedGameDbImp implements PlayedGameDb{
     private static final String SELECT_ALL_GAME = "SELECT * FROM GAMEPLAYED";
     private static final String INSERT_STEP = "INSERT INTO GAMEPLAYED(game_id,stepx,stepy,signValue) VALUES (?,?,?,?)";
     private static final String SELECT_GAME = "SELECT * FROM GAMEPLAYED where GAME_ID = ? order by step_id";
+    private static final String SELECT_GAME_ID = "select max(GAME_ID) from gameplayed";
     private Properties properties = new Properties();
     private  String connectionUrl;
 
@@ -42,6 +43,8 @@ public class PlayedGameDbImp implements PlayedGameDb{
                     game.setStepX(rs.getInt("STEPX"));
                     game.setStepY(rs.getInt("STEPX"));
                     game.setSignValue(rs.getString("SIGNVALUE"));
+
+                    result.add(game);
                 }
             }
         catch (SQLException throwables) {
@@ -51,7 +54,7 @@ public class PlayedGameDbImp implements PlayedGameDb{
     }
 
     @Override
-    public PlayedGame save(PlayedGame playedGame) {
+    public PlayedGame insert(PlayedGame playedGame) {
         try (Connection c = DriverManager.getConnection(connectionUrl);
              PreparedStatement statement = c.prepareStatement(INSERT_STEP);) {
             statement.setInt(1,playedGame.getGameId());
@@ -85,15 +88,15 @@ public class PlayedGameDbImp implements PlayedGameDb{
             try (ResultSet rs = statement.executeQuery();){
 
                 while (rs.next()) {
-                    System.out.println();
                     PlayedGame game = new PlayedGame();
+                    System.out.println("X" + rs.getInt("STEPX") + "Y" + rs.getInt("STEPY")) ;
                     game.setStepId(rs.getInt("STEP_ID"));
                     game.setGameId(rs.getInt("GAME_ID"));
                     game.setStepX(rs.getInt("STEPX"));
-                    game.setStepY(rs.getInt("STEPX"));
+                    game.setStepY(rs.getInt("STEPY"));
                     game.setSignValue(rs.getString("SIGNVALUE"));
+                    result.add(game);
                 }
-
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -101,4 +104,44 @@ public class PlayedGameDbImp implements PlayedGameDb{
         }
         return result;
     }
+
+
+    public int maxGameId() {
+        System.out.println("reses" );
+        try (Connection c = DriverManager.getConnection(connectionUrl);
+             Statement stat = c.createStatement();
+             ResultSet rs = stat.executeQuery(SELECT_GAME_ID);
+
+        )
+        {
+            System.out.println("reses" + stat.executeQuery(SELECT_GAME_ID));
+            while (rs.next()){
+                return rs.getInt("max(GAME_ID)");
+            }
+         }
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return 0;
+        }
+        return 0;
+    }
+
+    @Override
+    public void insert(int maxGameId, int x, int y, String mySign) {
+        System.out.println("Insert van");
+        try (Connection c = DriverManager.getConnection(connectionUrl);
+             PreparedStatement statement = c.prepareStatement(INSERT_STEP);) {
+            statement.setInt(1, maxGameId);
+            statement.setInt(2, x);
+            statement.setInt(3, y);
+            statement.setString(4, mySign);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 }

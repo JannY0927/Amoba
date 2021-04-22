@@ -9,8 +9,12 @@ import java.util.List;
 public interface PlayedGameDb {
 
     List<PlayedGame> findall();
-    PlayedGame save(PlayedGame playedGame);
+
+    PlayedGame insert(PlayedGame playedGame);
 
     List<PlayedGame> select(int gameId);
 
+    int maxGameId();
+
+    void insert(int maxGameId, int x, int y, String mySign);
 }

@@ -1,5 +1,8 @@
 package hu.alkfejl1;
 
+import hu.alkfejl1.db.PlayedGameDb;
+import hu.alkfejl1.db.PlayedGameDbImp;
+import hu.alkfejl1.model.PlayedGame;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -8,6 +11,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -19,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 
 public class amobaController implements Initializable {
 
@@ -29,7 +34,6 @@ public class amobaController implements Initializable {
     private ObjectProperty<Duration> gameTimeLeft;
     private ObjectProperty<Duration> player1TimeLeft;
     private ObjectProperty<Duration> player2TimeLeft;
-
     public amobaController() {
     };
 
@@ -53,6 +57,11 @@ public class amobaController implements Initializable {
     public Label player1Time;
     @FXML
     public Label player2Time;
+    @FXML
+    public Menu aaaexit;
+    @FXML
+    public Menu load;
+
 
     @FXML
     public String getType() {
@@ -64,6 +73,9 @@ public class amobaController implements Initializable {
         Player player1 = new Player(false, "X");
         Player player2 = new Player(false, "O");
         startGame(player1, player2);
+
+        PlayedGameDb gpd = new PlayedGameDbImp();
+        gpd.insert(gpd.maxGameId()+1,0,0,null);
 
     }
 
@@ -77,6 +89,8 @@ public class amobaController implements Initializable {
         //példányosítunk két jétékost
         // majd a játék osztályt
         //meghívjuk a játékosztály játék methodusát
+        PlayedGameDb gpd = new PlayedGameDbImp();
+        gpd.insert(gpd.maxGameId()+1,0,0,null);
     }
 
     private void startGame(Player player1, Player player2) {
@@ -85,8 +99,14 @@ public class amobaController implements Initializable {
         theGame.letsGame();
         // Ide kell majd neked egy if hogya nem playerenkénti az idő akkor kell ezt csinálni.
         try {
-            if (getType().equals("m11")) setGameTime();
-            else setPlayersTime();
+            if (getType().equals("m11")){
+                setGameTime(true);
+                setPlayersTime(false);
+            }
+            else {
+                setPlayersTime(true);
+                setGameTime(false);
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -148,29 +168,29 @@ public class amobaController implements Initializable {
     }
 
     @FXML
-    public void setGameTime() throws InterruptedException {
+    public void setGameTime(boolean isStarted) throws InterruptedException {
         gameTimer = new Timeline();
-        gameTimer.getKeyFrames().add(new KeyFrame(javafx.util.Duration.seconds(1), ae -> updateGameTimer()));
+        if (isStarted) gameTimer.getKeyFrames().add(new KeyFrame(javafx.util.Duration.seconds(1), ae -> updateGameTimer()));
         gameTimer.setCycleCount(Timeline.INDEFINITE);
         gameTimeLeft = new SimpleObjectProperty<>();
         gameTimeLeft.set(java.time.Duration.ofSeconds(theGame.getStartTime()));
-        initializeTimer(Sum1,gameTimeLeft);
+        if (isStarted) initializeTimer(Sum1,gameTimeLeft);
         gameTimer.playFromStart();
     }
 
 
-    private void setPlayersTime() {
+    private void setPlayersTime(boolean isStarted) {
         player1Timer = new Timeline();
         player2Timer = new Timeline();
-        player1Timer.getKeyFrames().add(new KeyFrame(javafx.util.Duration.seconds(1), ae -> updatePlayerTimer()));
+        if (isStarted) player1Timer.getKeyFrames().add(new KeyFrame(javafx.util.Duration.seconds(1), ae -> updatePlayerTimer()));
         player1Timer.setCycleCount(Timeline.INDEFINITE);
         player2Timer.setCycleCount(Timeline.INDEFINITE);
         player1TimeLeft = new SimpleObjectProperty<>();
         player1TimeLeft.set(java.time.Duration.ofSeconds(theGame.getStartTime()/2));
         player2TimeLeft = new SimpleObjectProperty<>();
         player2TimeLeft.set(java.time.Duration.ofSeconds(theGame.getStartTime()/2));
-        initializeTimer(player1Time,player1TimeLeft);
-        initializeTimer(player2Time,player2TimeLeft);
+        if (isStarted) initializeTimer(player1Time,player1TimeLeft);
+        if (isStarted) initializeTimer(player2Time,player2TimeLeft);
         player1Timer.playFromStart();
         player2Timer.playFromStart();
     }
@@ -226,9 +246,37 @@ public class amobaController implements Initializable {
                 absSeconds % 60);
         return positive;
     }
-
+    @FXML
     public void onExit() {
+        System.out.println("Exit");
         Platform.exit();
     }
 
+    @FXML
+    public void playLoadGame(ActionEvent actionEvent) throws InterruptedException {
+        clean();
+        System.out.println("Load");
+        int X;
+        int Y;
+        String sign;
+        PlayedGameDb gpd = new PlayedGameDbImp();
+        Player player1 = new Player(false, "X");
+        Player player2 = new Player(false, "O");
+        theGame = new Game(player1, player2, getType(), Grid01);
+        List<PlayedGame> steps = new ArrayList<>();
+        steps = gpd.select(gpd.maxGameId());
+        for (int i=0;i< steps.size();i++) {
+            X = steps.get(i).getStepX();
+            Y = steps.get(i).getStepY();
+            sign = steps.get(i).getSignValue();
+            Button loadChoiceObj = (Button) theGame.getNodeFromGridPane(Grid01, X, Y);
+            loadChoiceObj.setText(sign);
+        }
+    }
+
+    public void loadwithid(ActionEvent actionEvent) {
+        FXMLLoader fxmlLoader = App.loadFXML(("/fxml/add_edit_contact.fxml"));
+       // App.0
+                //loadfxml(("/load.fxml"));
+    }
 };

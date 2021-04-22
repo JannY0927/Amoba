@@ -1,6 +1,8 @@
 package hu.alkfejl1;
 
 
+import hu.alkfejl1.db.PlayedGameDb;
+import hu.alkfejl1.db.PlayedGameDbImp;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -83,6 +85,9 @@ public class Game {
 
     public void takeMySign(int x, int y) throws InterruptedException {
         table[x][y] = actPlayer.getMySign();
+        PlayedGameDb gpd = new PlayedGameDbImp();
+        int maxGameId = gpd.maxGameId();
+        gpd.insert(maxGameId,x,y,actPlayer.getMySign());
         if (isWin(actPlayer.getMySign())) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText("Nyert a " + actPlayer.getMySign() + " játékos");
@@ -102,6 +107,7 @@ public class Game {
             coordinata = TakeCpuSign();
 
             ((Button) getNodeFromGridPane(grid, coordinata[0],coordinata[1])).fire();
+            gpd.insert(maxGameId,x,y,actPlayer.getMySign());
         }
     }
 
