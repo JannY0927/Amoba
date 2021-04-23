@@ -1,4 +1,5 @@
-hu\alkfejl1\Player.class
 hu\alkfejl1\amobaController.class
-hu\alkfejl1\Game.class
+hu\alkfejl1\LoadGameController.class
 hu\alkfejl1\App.class
+hu\alkfejl1\Player.class
+hu\alkfejl1\Game.class

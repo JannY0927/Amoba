@@ -12,7 +12,7 @@
                     <items>
                         <MenuItem id="m01" fx:id="m01" mnemonicParsing="false" onAction="#setHumanvVsCpu" text="Player VS CPU" />
                         <MenuItem fx:id="m02" mnemonicParsing="false" onAction="#setHumanvVsHuman" text="Player VS Player" />
-                        <MenuItem fx:id = "exit" mnemonicParsing="false" onAction="#onExit" text="Exit" />
+                        <MenuItem fx:id="exit" mnemonicParsing="false" onAction="#onExit" text="Exit" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Settings">
@@ -24,9 +24,10 @@
                         <RadioMenuItem id="m12" fx:id="m12" mnemonicParsing="false" text="PlayerTime" toggleGroup="$type" />
                     </items>
                 </Menu>
-                <Menu fx:id = "load" mnemonicParsing="false" onAction="#playLoadGame" text="Load game">
+                <Menu fx:id="load" mnemonicParsing="false" onAction="#playLoadGame" text="Load game">
                     <items>
                         <MenuItem id="M03" fx:id="m03" mnemonicParsing="false" onAction="#playLoadGame" text="Utolsó játék visszanézése" />
+                  <MenuItem fx:id="loadid" mnemonicParsing="false" onAction="#loadwithid" text="Betöltés azonosító alapján" />
                     </items>
               </Menu>
             </menus>
@@ -38,7 +39,7 @@
             </ContextMenu>
          </contextMenu>
         </MenuBar>
-        <Label fx:id="Sum1"  text="GameTime" />
+        <Label fx:id="Sum1" text="GameTime" />
         <HBox fx:id="CenterBox">
             <children>
                 <Label fx:id="player1Time" text="P1 Time">

@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="amoba_dt" />
         <module name="amoba_master" />
+        <module name="amoba_web" />
       </profile>
     </annotationProcessing>
   </component>

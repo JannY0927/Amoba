@@ -275,8 +275,5 @@ public class amobaController implements Initializable {
     }
 
     public void loadwithid(ActionEvent actionEvent) {
-        FXMLLoader fxmlLoader = App.loadFXML(("/fxml/add_edit_contact.fxml"));
-       // App.0
-                //loadfxml(("/load.fxml"));
     }
 };
