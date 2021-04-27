@@ -1,0 +1,39 @@
+button.gamecell {
+    width: 50px;
+    height: 50px;
+}
+.board {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#gamecell {
+    width: 50px;
+    height: 50px;
+}
+
+.datas {
+    border: #1a1e21 1px solid;
+    margin-left: 50px;
+}
+
+.masterSettingMiddle ,.datasdatas{
+    margin: auto;
+}
+
+.time {
+    padding-right: 30px;
+}
+
+
+.time2 {
+    border: black 1px solid;
+
+    padding-right: 30px;
+}
+
+fieldset {
+    margin-left: auto;
+    margin-right: auto;
+    width: 600px;
+}

@@ -7,9 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="amoba_dt" />
+        <module name="amoba_webapp" />
         <module name="amoba_master" />
-        <module name="amoba_web" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="amoba_web" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>

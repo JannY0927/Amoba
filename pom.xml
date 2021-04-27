@@ -10,7 +10,7 @@
     <modules>
         <module>amoba_master</module>
         <module>amoba_dt</module>
-        <module>amoba_web</module>
+        <module>amoba_webapp</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
