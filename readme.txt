@@ -2,7 +2,8 @@ Az amoba programot választottam.
 A programhoz javafx telepítésre és környezeti változó  beállítására van szükség.
 A web alkalmazás Tomcat 9.0.45-ön fut.
 
-A DT alkalamzás a parancsokkal érhető el a javafx és mavan alkalmazásopk
+A DT alkalamzás a parancsokkal érhető el a javafx és mavan alkalmazásokkal.
+Futtanadó parancsok az Amoba mappában.
 
 mvn package -f pom.xml
 mvn javafx:run -f amoba_dt/pom.xml
