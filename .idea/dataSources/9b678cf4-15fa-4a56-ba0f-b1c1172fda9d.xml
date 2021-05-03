@@ -1357,7 +1357,6 @@
     <column id="496" parent="170" name="signValue">
       <Position>5</Position>
       <DataType>text|0s</DataType>
-      <NotNull>1</NotNull>
     </column>
     <key id="497" parent="170" name="GAMEPLAYED_pk">
       <ColNames>step_id</ColNames>

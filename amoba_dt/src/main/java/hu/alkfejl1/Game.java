@@ -72,6 +72,7 @@ public class Game {
         //   }
     }
 
+    //Játékos kezelés
     public void setActPlayer(){
         if (actPlayer.equals(player1)) {
             actPlayer.setMyTime(startTime-timer-player1.getMyTime());
@@ -83,35 +84,33 @@ public class Game {
         }
     }
 
-    public void takeMySign(int x, int y) throws InterruptedException {
+    //leteszünk egy jelet
+    public void takeMySign(int x, int y) throws InterruptedException, ClassNotFoundException {
         table[x][y] = actPlayer.getMySign();
         PlayedGameDb gpd = new PlayedGameDbImp();
         int maxGameId = gpd.maxGameId();
         gpd.insert(maxGameId,x,y,actPlayer.getMySign());
+        // csak akkor vizsgálunk tovább ha nem nyert valaki
         if (isWin(actPlayer.getMySign())) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText("Nyert a " + actPlayer.getMySign() + " játékos");
             alert.showAndWait();
-
-
         }
         else
-        if (actPlayer.equals(player1)) {
-            actPlayer=player2;
-        }
-        else    {
-            actPlayer=player1;
-        }
+            if (actPlayer.equals(player1)) {
+                actPlayer=player2;
+            }
+        else actPlayer=player1;
+        //Ha az aktuális játékos gép akkor nem várunk lépunk
         if (actPlayer.isMachine()) {
             int[] coordinata = new int[2];
             coordinata = TakeCpuSign();
-
             ((Button) getNodeFromGridPane(grid, coordinata[0],coordinata[1])).fire();
             gpd.insert(maxGameId,x,y,actPlayer.getMySign());
         }
     }
 
-
+    //Mit tegyen a gép random
     public int[] TakeCpuSign(){
         ArrayList<int[]> indices = new ArrayList<int[]>();
         for (int i = 0; i < table.length; i++) {
@@ -132,6 +131,8 @@ public class Game {
 
     }
 
+
+    //Cella meghatározás
     public Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
         for (Node node : gridPane.getChildren()) {
             if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
@@ -141,19 +142,13 @@ public class Game {
         return null;
     }
 
-    public boolean haveGameTime() {
-        return true;
-    }
-
-    public boolean havePlayerTime() {
-        return true;
-    }
-
+    //nyerni
     public boolean isWin(String mySign) {
         System.out.println("ujlepes: "+mySign);
         for (int i=0;i< table.length;i++) {
             for (int j=0;j< table.length;j++) {
                 if (table[i][j] == mySign) {
+                    //Függőlegesen nyertünk-e
                     if (!this.meWin) {
                         for (int down = 1; down < win; down++) {
                             System.out.println("Downindex i: " + (i) +"index j: " + (j) + "cikv" + down + " Table"+(table.length) + meWin);
@@ -167,9 +162,9 @@ public class Game {
                             System.out.println("Downindex i: " + (i) +"index j: " + (j) + "cikv" + down + " Table"+(table.length) + meWin);
                         }
                     }
+                    //Vízszintesen nyertünk-e
                     if (!meWin) {
                         for (int right = 1; right < win ; right++) {
-                            System.out.println("Rightindex i: " + (i) + "index j: " + (j) + "cikv" + right + " Table" + (table.length) + meWin);
                             if (j + right < table.length && table[i][j + right] == mySign) {
                             } else {
                                 meWin = false;
@@ -179,6 +174,7 @@ public class Game {
                             System.out.println("Rightindex i: " + (i) + "index j: " + (j) + "cikv" + right + " Table" + (table.length) + meWin);
                         }
                     }
+                    //Átlósan balra le nyertünk-e
                     if (!meWin) {
                         for (int dl = 1; dl < win; dl++) {
                             System.out.println("dlindex i: " + (i) + "index j: " + (j) + "cikv" + dl + " Table" + (table.length) + meWin);
@@ -188,11 +184,10 @@ public class Game {
                                 break;
                             }
                             meWin = true;
-
                             System.out.println("dlindex i: " + (i) + "index j: " + (j) + "cikv" + dl + " Table" + (table.length) + meWin);
                         }
                     }
-
+                    //Átlósan jobbra le nyertünk-e
                     if (!meWin) {
                         for (int dr = 1; dr < win; dr++) {
                             System.out.println("drindex i: " + (i) + "index j: " + (j) + "cikv" + dr + " Table" + (table.length) + meWin);

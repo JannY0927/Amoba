@@ -11,12 +11,12 @@ import java.util.Properties;
 
 public class PlayedGameDbImp implements PlayedGameDb{
 
-    private static final String SELECT_ALL_GAME = "SELECT * FROM GAMEPLAYED";
     private static final String INSERT_STEP = "INSERT INTO GAMEPLAYED(game_id,stepx,stepy,signValue) VALUES (?,?,?,?)";
     private static final String SELECT_GAME = "SELECT * FROM GAMEPLAYED where GAME_ID = ? order by step_id";
     private static final String SELECT_GAME_ID = "select max(GAME_ID) from gameplayed";
     private Properties properties = new Properties();
     private  String connectionUrl;
+
 
     public PlayedGameDbImp() {
         try {
@@ -27,32 +27,7 @@ public class PlayedGameDbImp implements PlayedGameDb{
         }
     }
 
-
-    @Override
-    public List<PlayedGame> findall() {
-        List<PlayedGame> result = new ArrayList<>();
-        try (Connection c = DriverManager.getConnection(connectionUrl);
-             Statement stat = c.createStatement();
-             ResultSet rs = stat.executeQuery(SELECT_ALL_GAME);
-        )
-            {
-                while (rs.next()){
-                    PlayedGame game = new PlayedGame();
-                    game.setStepId(rs.getInt("STEP_ID"));
-                    game.setGameId(rs.getInt("GAME_ID"));
-                    game.setStepX(rs.getInt("STEPX"));
-                    game.setStepY(rs.getInt("STEPX"));
-                    game.setSignValue(rs.getString("SIGNVALUE"));
-
-                    result.add(game);
-                }
-            }
-        catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return result;
-    }
-
+    //Sor insert
     @Override
     public PlayedGame insert(PlayedGame playedGame) {
         try (Connection c = DriverManager.getConnection(connectionUrl);
@@ -76,6 +51,7 @@ public class PlayedGameDbImp implements PlayedGameDb{
         return playedGame;
     }
 
+    //Egy játékot gyűjtünk le
     @Override
     public List<PlayedGame> select(int  gameId) {
         System.out.println("ides" + gameId);
@@ -106,8 +82,12 @@ public class PlayedGameDbImp implements PlayedGameDb{
     }
 
 
-    public int maxGameId() {
+    //Legnagyobb játék is keresés
+    public int maxGameId() throws ClassNotFoundException {
         System.out.println("reses" );
+
+        Class.forName("org.sqlite.JDBC");
+
         try (Connection c = DriverManager.getConnection(connectionUrl);
              Statement stat = c.createStatement();
              ResultSet rs = stat.executeQuery(SELECT_GAME_ID);

@@ -58,8 +58,6 @@ public class amobaController implements Initializable {
     @FXML
     public Label player2Time;
     @FXML
-    public Menu aaaexit;
-    @FXML
     public Menu load;
 
 
@@ -68,8 +66,11 @@ public class amobaController implements Initializable {
         return ((RadioMenuItem) type.getSelectedToggle()).getId();
     }
 
+
+    //Beálltjuk a játékmódot. Különböző módon példányosítunk
+
     @FXML
-    public void setHumanvVsHuman(ActionEvent event) {
+    public void setHumanvVsHuman(ActionEvent event) throws ClassNotFoundException {
         Player player1 = new Player(false, "X");
         Player player2 = new Player(false, "O");
         startGame(player1, player2);
@@ -79,20 +80,17 @@ public class amobaController implements Initializable {
 
     }
 
+    //Beálltjuk a játékmódot. Különböző módon példányosítunk
     @FXML
-    public void setHumanvVsCpu(ActionEvent event) {
+    public void setHumanvVsCpu(ActionEvent event) throws ClassNotFoundException {
         Player player1 = new Player(false, "X");
         Player player2 = new Player(true, "O");
         startGame(player1, player2);
-        //töröljük a példányosításokat
-        //töröljük a táblán a mezőket
-        //példányosítunk két jétékost
-        // majd a játék osztályt
-        //meghívjuk a játékosztály játék methodusát
         PlayedGameDb gpd = new PlayedGameDbImp();
         gpd.insert(gpd.maxGameId()+1,0,0,null);
     }
 
+    //Játék és Timer indítás
     private void startGame(Player player1, Player player2) {
         clean();
         theGame = new Game(player1, player2, getType(), Grid01);
@@ -113,6 +111,7 @@ public class amobaController implements Initializable {
     }
 
 
+    //TÁblatér nullázás
     public void clean() {
         List<Button> buttonList = new ArrayList<>();
         for (Node node : Grid01.getChildren()) {
@@ -126,7 +125,7 @@ public class amobaController implements Initializable {
         }
     }
 
-
+    //Tábla esemlény kezelés
     @FXML
     public void handleButtonAction(ActionEvent event) throws InterruptedException {
         Button clickedButton = (Button) event.getSource();
@@ -142,7 +141,7 @@ public class amobaController implements Initializable {
             }
 
 
-        }catch (NullPointerException e) {
+        }catch (NullPointerException | ClassNotFoundException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText("Előszőr válasz játék típust a NewGame menü alatt");
             alert.showAndWait();
@@ -150,7 +149,7 @@ public class amobaController implements Initializable {
 
     }
 
-
+    //A
     @FXML
     public void takeCPUSign() throws InterruptedException {
         //clickedButton.setText(theGame.getActPlayer().getMySign());
@@ -167,6 +166,7 @@ public class amobaController implements Initializable {
         System.out.println("Letsgo");
     }
 
+    //Játékidő kezelés
     @FXML
     public void setGameTime(boolean isStarted) throws InterruptedException {
         gameTimer = new Timeline();
@@ -178,7 +178,7 @@ public class amobaController implements Initializable {
         gameTimer.playFromStart();
     }
 
-
+    //Játékidő kezelés
     private void setPlayersTime(boolean isStarted) {
         player1Timer = new Timeline();
         player2Timer = new Timeline();
@@ -196,10 +196,9 @@ public class amobaController implements Initializable {
     }
 
 
-
+    //Játékidő kezelés
     private void updateGameTimer() {
         gameTimeLeft.set(gameTimeLeft.get().minusSeconds(1));
-        // Ide kell egy figyelés, ha lejárt akkor dobjon hibát. Amit lekezel a program.
         if (gameTimeLeft.get() == Duration.ZERO ||theGame.isMeWin()){
             gameTimer.stop();
             if (gameTimeLeft.get() == Duration.ZERO) {
@@ -212,7 +211,7 @@ public class amobaController implements Initializable {
         }
     }
 
-
+    //Játékidő kezelés
     private void updatePlayerTimer() {
         if (theGame.getActPlayer() == theGame.getPlayer2())  player2TimeLeft.set(player2TimeLeft.get().minusSeconds(1));
         else player1TimeLeft.set(player1TimeLeft.get().minusSeconds(1));
@@ -237,6 +236,8 @@ public class amobaController implements Initializable {
         obj.textProperty().bind(Bindings.createStringBinding(() -> getTimeStringFromDuration(timelineleft.get()), timelineleft));
     }
 
+
+    //Játékidő kezelés
     private static String getTimeStringFromDuration(Duration duration) {
         long seconds = duration.getSeconds();
         long absSeconds = Math.abs(seconds);
@@ -252,8 +253,9 @@ public class amobaController implements Initializable {
         Platform.exit();
     }
 
+    //Játék visszatöltés esemény kezelés
     @FXML
-    public void playLoadGame(ActionEvent actionEvent) throws InterruptedException {
+    public void playLoadGame(ActionEvent actionEvent) throws InterruptedException, ClassNotFoundException {
         clean();
         System.out.println("Load");
         int X;
